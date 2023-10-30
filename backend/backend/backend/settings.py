@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import environ
+
+
+
 # Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
@@ -44,6 +47,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2'
 ]
 
 MIDDLEWARE = [
@@ -62,9 +68,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'drf_social_oauth2.authentication.SocialAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 
@@ -73,11 +81,20 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 AUTHENTICATION_BACKENDS = (
-
+    'social_core.backends.azuread_tenant.AzureADOAuth2',
+    'drf_social_oauth2.backends.DjangoOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 
 )
 
+# SOCIAL AUTH MICROSOFT SETTING
+DRFSO2_PROPRIETARY_BACKEND_NAME = "Microsoft"
+SOCIAL_AUTH_AZUREAD_OAUTH2_KEY = env('AZUREAD_OAUTH2_KEY')
+SOCIAL_AUTH_AZUREAD_OAUTH2_SECRET = env('AZUREAD_OAUTH2_SECRET')
+SOCIAL_AUTH_AZUREAD_OAUTH2_RESOURCE = 'https://graph.microsoft.com/'
+SOCIAL_AUTH_AZUREAD_EXTRA_DATA = [
+    ("openid", "profile", "user_impersonation", "email")
+]
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -91,6 +108,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
