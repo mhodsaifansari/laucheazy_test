@@ -12,6 +12,11 @@ Django Rest API with Microsoft Outlook Authentication
 ## Database
 - MySQL
 
+## Hosted On:
+- Backend API: https://mhodsaifsps.pythonanywhere.com
+- Frontend :  https://silly-hotteok-e91834.netlify.app/
+- Postman Collection: https://www.postman.com/planetary-desert-940330/workspace/mohd-saif-ansari/collection/16499545-3fa0ead3-1b5d-492d-9c27-f43b05b2dc63?action=share&creator=16499545
+
 > **Important**<br>
 > **Before running server,After Installing drf-social-oauth2 Update Social_Core Library: <u>Lib/social_core/backend/azuread.py</u>**<br>
 ```sh
@@ -95,9 +100,4 @@ Django Rest API with Microsoft Outlook Authentication
                    }
          }
       ```
-
-Hosted Application:<br>
-Frontend: https://silly-hotteok-e91834.netlify.app/ <br>
-Backend API: https://mhodsaifsps.pythonanywhere.com/
-
 
