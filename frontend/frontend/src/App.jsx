@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import MicrosoftLogin from "react-microsoft-login";
 import axios from "axios";
+import url from './url';
 function App() {
   const [msalInstance, onMsalInstanceChange] = useState();
   const [status,setStatus] = useState(false);
@@ -10,7 +11,7 @@ function App() {
   useEffect(()=>{
     if(localStorage.getItem('access_token')&&localStorage.getItem('refresh_token'))
     { 
-      axios.get("http://127.0.0.1:8000",{headers:{'Authorization':'Bearer '+localStorage.getItem('access_token')}}).then((data)=>{
+      axios.get(url,{headers:{'Authorization':'Bearer '+localStorage.getItem('access_token')}}).then((data)=>{
         console.log(data);
         setStatus(true);
         setUser(data.data.user);
@@ -24,7 +25,7 @@ function App() {
     console.log(err,authData);
     if (!err && authData) {
       onMsalInstanceChange(msal);
-      axios.post("http://127.0.0.1:8000/auth/convert-token",{
+      axios.post(url+"/auth/convert-token",{
         "grant_type":"convert_token",
         "client_id":import.meta.env.VITE_APPLICATION_CLIENT_ID,
         "client_secret":import.meta.env.VITE_APPLICATION_CLIENT_SECRET,
@@ -34,7 +35,7 @@ function App() {
         localStorage.setItem('access_token',data.data.access_token);
         localStorage.setItem('refresh_token',data.data.refresh_token);
         localStorage.setItem('msalInstance',msalInstance);
-        axios.get("http://127.0.0.1:8000",{headers:{'Authorization':'Bearer '+localStorage.getItem('access_token')}}).then((data)=>{
+        axios.get(url,{headers:{'Authorization':'Bearer '+localStorage.getItem('access_token')}}).then((data)=>{
           setStatus(true);
           setUser(data.data.user);
         }).catch((err)=>{
@@ -91,7 +92,7 @@ function App() {
         <div>
         {msalInstance?<button onClick={logoutHandler}>Logout</button>
           : 
-            <MicrosoftLogin clientId={import.meta.env.VITE_CLIENT_ID} authCallback={authHandler} ></MicrosoftLogin>
+            <MicrosoftLogin clientId={import.meta.env.VITE_CLIENT_ID} authCallback={authHandler} redirectUri='https://silly-hotteok-e91834.netlify.app'></MicrosoftLogin>
           }
           </div>
           <h3>Not Logged In</h3></div>}

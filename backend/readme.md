@@ -96,3 +96,8 @@ Django Rest API with Microsoft Outlook Authentication
          }
       ```
 
+Hosted Application:<br>
+Frontend: https://silly-hotteok-e91834.netlify.app/ <br>
+Backend API: https://mhodsaifsps.pythonanywhere.com/
+
+
